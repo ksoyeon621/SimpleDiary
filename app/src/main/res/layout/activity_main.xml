@@ -8,6 +8,7 @@
     tools:context="com.example.simplediary.MainActivity">
 
     <DatePicker
+        android:id="@+id/date_pick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:calendarViewShown="false"
@@ -15,12 +16,13 @@
         />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:Lines="10" />
+        android:lines="10" />
 
     <Button
+        android:id="@+id/but"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
