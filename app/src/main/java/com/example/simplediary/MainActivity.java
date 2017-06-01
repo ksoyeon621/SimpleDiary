@@ -1,14 +1,18 @@
 package com.example.simplediary;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
 
@@ -24,6 +28,20 @@ public class MainActivity extends AppCompatActivity {
         date = (DatePicker)findViewById(R.id.date_pick);
         edit = (EditText)findViewById(R.id.edit);
         but = (Button)findViewById(R.id.but);
+        but.setOnClickListener(new View.OnClickListener() { //익명클래스 객체
+            @Override
+            public void onClick(View v) {
+                try {
+                    FileOutputStream fout = openFileOutput(filename, Context.MODE_PRIVATE/*현재 앱에서만 파일이 접근이 가능하다는 뜻이다!!*/);
+                    String str=edit.getText().toString(); //출력할 때 쓸 데이터
+                    fout.write(str.getBytes());
+                    fout.close();
+                    Toast.makeText(MainActivity.this,"정상적으로 "+filename+"파일이 저장되었습니다.", Toast.LENGTH_LONG).show();
+                } catch (IOException e) { //낫파운드 익셉션의 내용이 없을 땐 아이오 익셉션으로 대신사용해도 됀다.
+                    e.printStackTrace();
+                }
+            }
+        });
 
         //현재날짜로 설정하기
         Calendar cal = Calendar.getInstance();
@@ -56,7 +74,19 @@ public class MainActivity extends AppCompatActivity {
             edit.setText("일기가 존재하지 않습니다.");
             but.setText("새로 저장");
          } catch (IOException e) {
+            //컴파일타임
+            //저장을 하면 id를 사용하지 않는 다면 콘솔창에서 컴파일을 해줘야 한다.
+            //컴파일타임에 예외처리를 해야돼는 경우가 있다.
+            //미리 예외처리를 해야 사용할 수 있는 메소드 들이 있다.
+            //예외적인 상황이 많이 발생하니까 미리 예외처리를 해서 확인을 해라라는 의미
+
+            //런타임
          }
+        try {
+            fin.close();//원래는 catch 바깥쪽에서 해야한다.
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return diaryStr;
     }
 }
